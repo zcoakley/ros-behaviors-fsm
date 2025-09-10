@@ -13,9 +13,9 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='zara',
-    maintainer_email='zara@todo.todo',
-    description='TODO: Package description',
+    maintainer='Zara, Lily',
+    maintainer_email='themightyzc@gmail.com, lilys email here',
+    description='Code to make the Neato robot perform several behaviors.',
     license='Apache-2.0',
     tests_require=['pytest'],
     entry_points={
