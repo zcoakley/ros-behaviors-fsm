@@ -32,14 +32,22 @@ class TeleopNode(Node):
     def run_loop(self):
         msg = Twist()
 
-        key = None
-        while key != "\x03":
-            key = self.get_key()
-            if key == 65:
-                msg.linear.x = 0.2
-            self.vel_pub.publish(msg)
-            # print(key)
-        sys.exit()
+        key = self.get_key()
+
+        if key == "\x03":
+            rclpy.shutdown()
+            return
+
+        if key == "w":
+            msg.linear.x = 0.2
+        if key == "s":
+            msg.linear.x = -0.2
+        if key == "a":
+            msg.angular.z = 0.2
+        if key == "d":
+            msg.angular.z = -0.2
+
+        self.vel_pub.publish(msg)
 
 
 def main(args=None):
