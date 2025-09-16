@@ -21,6 +21,7 @@ setup(
         "console_scripts": [
             "teleop = ros_behaviors_fsm.teleop:main",
             "draw_square = ros_behaviors_fsm.draw_square:main",
+            "finite_state_controller = ros_behaviors_fsm.finite_state_controller:main",
         ],
     },
 )
