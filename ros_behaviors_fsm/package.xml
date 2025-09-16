@@ -3,7 +3,7 @@
 <package format="3">
   <name>ros_behaviors_fsm</name>
   <version>0.0.0</version>
-  <description></description>
+  <description>Code to make the Neato robot perform several behaviors in a finite state machine.</description>
   <maintainer email="themightyzc@gmail.com">Zara</maintainer>
   <maintainer email="lilywei2023@gmail.com">Lily</maintainer>
   <maintainer email="the.zahra.lari@gmail.com">Zahra</maintainer>
