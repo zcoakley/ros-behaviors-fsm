@@ -1,12 +1,12 @@
-# Items here must be changed in setup.py as well
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>ros_behaviors_fsm</name>
   <version>0.0.0</version>
-  <description>Code to make the Neato robot perform several behaviors.</description>
+  <description>Code to make the Neato robot perform several behaviors in a finite state machine.</description>
   <maintainer email="themightyzc@gmail.com">Zara</maintainer>
-  <maintainer email="lily's email here">Lily</maintainer>
+  <maintainer email="lilywei2023@gmail.com">Lily</maintainer>
+  <maintainer email="the.zahra.lari@gmail.com">Zahra</maintainer>
   <license>Apache-2.0</license>
 
   <test_depend>ament_copyright</test_depend>

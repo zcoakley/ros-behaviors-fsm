@@ -12,9 +12,9 @@ setup(
     ],
     install_requires=["setuptools"],
     zip_safe=True,
-    maintainer="Zara, Lily",
-    maintainer_email="themightyzc@gmail.com, lilys email here",
-    description="Code to make the Neato robot perform several behaviors.",
+    maintainer="Zara, Lily, Zahra",
+    maintainer_email="themightyzc@gmail.com, lilywei2023@gmail.com, the.zahra.lari@gmail.com",
+    description="Code to make the Neato robot perform several behaviors in a finite state machine.",
     license="Apache-2.0",
     tests_require=["pytest"],
     entry_points={
