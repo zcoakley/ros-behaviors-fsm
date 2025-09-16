@@ -3,7 +3,7 @@
 <package format="3">
   <name>ros_behaviors_fsm</name>
   <version>0.0.0</version>
-  <description>Code to make the Neato robot perform several behaviors in a finite state machine.</description>
+  <description></description>
   <maintainer email="themightyzc@gmail.com">Zara</maintainer>
   <maintainer email="lilywei2023@gmail.com">Lily</maintainer>
   <maintainer email="the.zahra.lari@gmail.com">Zahra</maintainer>
@@ -13,7 +13,7 @@
   <test_depend>ament_flake8</test_depend>
   <test_depend>ament_pep257</test_depend>
   <test_depend>python3-pytest</test_depend>
-
+Code to make the Neato robot perform several behaviors in a finite state machine.
   <export>
     <build_type>ament_python</build_type>
   </export>
