@@ -36,13 +36,13 @@ class WallFollowerNode(Node):
         """
         Look at predefined angles.
         """
-        # self._distances and self._angles haven't been populated yet
+        # return if self._distances and self._angles haven't been populated yet
         if not self._distances[0]:
             return
 
         msg = Twist()
 
-        # hardcoding points for now (both on the left of the neato)
+        # hardcoding points for now (both on the right of the neato)
         theta_1 = self._angles[250]
         theta_2 = self._angles[290]
         a = self._distances[250]
