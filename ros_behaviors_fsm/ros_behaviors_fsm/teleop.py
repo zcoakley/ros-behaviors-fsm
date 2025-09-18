@@ -1,5 +1,5 @@
 """
-This is a teleop node that lets the user control the Neato's movements using keyboard input.
+Defines a teleop node that lets the user control the Neato's movements using keyboard input.
 """
 
 import tty
@@ -23,6 +23,12 @@ class TeleopNode(Node):
         self.settings = termios.tcgetattr(sys.stdin)
 
     def get_key(self):
+        """
+        Return a keystroke from the keyboard input.
+
+        Returns:
+            A str representing the pressed key, if available, else an empty string.
+        """
         tty.setraw(sys.stdin.fileno())
         select.select([sys.stdin], [], [], 0)
         key = sys.stdin.read(1)
@@ -30,6 +36,13 @@ class TeleopNode(Node):
         return key
 
     def run_loop(self):
+        """
+        Run the teleop behavior, allowing the user to control the Neato using the keyboard.
+
+        This function is run by a timer every 0.1 sec. It gets a keystroke from
+        the keyboard and submits a message to cmd_vel with the corresponding linear (x) or
+        angular (z) velocity. If ctrl-c is pressed, the node terminates.
+        """
         msg = Twist()
 
         key = self.get_key()
