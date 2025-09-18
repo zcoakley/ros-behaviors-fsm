@@ -1,19 +1,20 @@
 """
-This is a wall follower node, which causes the Neato to follow a wall near it. It assumes there
-is exactly one straight wall by it.
+This is a wall follower node, which directs the Neato to follow a wall to its right.
 """
 
+import math
 import rclpy
 from rclpy.node import Node
+from rclpy.qos import qos_profile_sensor_data
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import LaserScan
-from rclpy.qos import qos_profile_sensor_data
-import math
 
 
 class WallFollowerNode(Node):
     """
     A Node subclass that makes the Neato follow a nearby wall.
+
+    It assumes there is a straight wall on the Neato's right side.
     """
 
     LASER_SCAN_RANGE_MIN = 0.10000000149011612  # meters
@@ -34,7 +35,16 @@ class WallFollowerNode(Node):
 
     def run_loop(self):
         """
-        Look at predefined angles.
+        Run the wall following behavior.
+
+        This function is run on a timer every 0.1 sec. It uses proportional control to
+        adjust the Neato's angular z velocity based on lider scan data from the /scan
+        topic. It adjusts the velocity to turn the Neato parallel to the wall and move
+        it forward at 0.2 m/s.
+
+        Publishes:
+            Twist representing the desired linear and angular velocities to the /cmd_vel
+            topic.
         """
         # return if self._distances and self._angles haven't been populated yet
         if not self._distances[0]:
@@ -71,7 +81,8 @@ class WallFollowerNode(Node):
         This function is called whenever a new lidar scan is published on the /scan
         topic. It creates a distances and angles array, which contain the distance
         from the Neato and angle (starting from the front of the Neato and going
-        counterclockwise) of each point in the scan.
+        counterclockwise) of each point in the scan. If the resulting distance is
+        out of the Neato lidar's scan range, the value becomes None.
 
         Args:
             msg: A LaserScan message, which is passed in by the subscription.
@@ -81,7 +92,7 @@ class WallFollowerNode(Node):
                        point in the scan.
             angles: An array of ints containing the angle (in radians, going
                     counterclockwise from the front of the Neato) of each point in
-                    the scan .
+                    the scan.
         """
         for i, distance in enumerate(msg.ranges):
             if self.LASER_SCAN_RANGE_MIN < distance < self.LASER_SCAN_RANGE_MAX:
