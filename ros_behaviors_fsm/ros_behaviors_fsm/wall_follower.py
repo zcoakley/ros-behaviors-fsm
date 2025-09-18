@@ -14,7 +14,7 @@ class WallFollowerNode(Node):
     """
     A Node subclass that makes the Neato follow a nearby wall.
 
-    It assumes there is a straight wall on the Neato's right side.
+    It assumes there is a wall on the Neato's right side.
     """
 
     LASER_SCAN_RANGE_MIN = 0.10000000149011612  # meters
