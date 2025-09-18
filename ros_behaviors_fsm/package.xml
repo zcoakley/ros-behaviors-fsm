@@ -9,11 +9,16 @@
   <maintainer email="the.zahra.lari@gmail.com">Zahra</maintainer>
   <license>Apache-2.0</license>
 
+  <depend>rclpy</depend>
+  <depend>geometry_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>python3-numpy</depend>
+
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
   <test_depend>ament_pep257</test_depend>
   <test_depend>python3-pytest</test_depend>
-Code to make the Neato robot perform several behaviors in a finite state machine.
   <export>
     <build_type>ament_python</build_type>
   </export>
