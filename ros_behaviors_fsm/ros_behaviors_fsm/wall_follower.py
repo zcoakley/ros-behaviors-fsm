@@ -22,8 +22,6 @@ class WallFollowerNode(Node):
     LASER_SCAN_ANGLE_INCREMENT = 0.017453277483582497  # radians
     LASER_SCAN_ARRAY_LENGTH = 361
     Kp = 1
-    _distances = [None] * LASER_SCAN_ARRAY_LENGTH
-    _angles = [None] * LASER_SCAN_ARRAY_LENGTH
 
     def __init__(self):
         super().__init__("wall_follower")
@@ -32,6 +30,8 @@ class WallFollowerNode(Node):
         self.create_subscription(
             LaserScan, "scan", self.process_scan, qos_profile=qos_profile_sensor_data
         )
+        self._distances = [None] * self.LASER_SCAN_ARRAY_LENGTH
+        self._angles = [None] * self.LASER_SCAN_ARRAY_LENGTH
 
     def run_loop(self):
         """
