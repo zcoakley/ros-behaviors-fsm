@@ -16,9 +16,18 @@ import math
 
 
 class DrawSquare(Node):
-    """A class that implements a node to pilot a robot in a square."""
+    """
+    Class that gets robot to drive in square
+
+    Attributes:
+        vel_pub (rclpy.publisher.Publisher): Published for velocities
+        run_loop_thread (Thread): Thread that runs drive loop
+    """
 
     def __init__(self):
+        """
+        Initializes DrawSquare node
+        """
         super().__init__("draw_square")
         # create a thread to handle long-running component
         self.vel_pub = self.create_publisher(Twist, "cmd_vel", 10)
@@ -26,8 +35,8 @@ class DrawSquare(Node):
         self.run_loop_thread.start()
 
     def run_loop(self):
-        """Executes the main logic for driving the square.  This function does
-        not return until the square is finished
+        """
+        Main drive loop to get robot to drive in a square
         """
         # the first message on the publisher is often missed
         self.drive(0.0, 0.0)
@@ -40,11 +49,12 @@ class DrawSquare(Node):
         print("done with run loop")
 
     def drive(self, linear, angular):
-        """Drive with the specified linear and angular velocity.
+        """
+        Drive with given linear and angular velocity
 
         Args:
-            linear (_type_): the linear velocity in m/s
-            angular (_type_): the angular velocity in radians/s
+            linear (float): Linear velocity in m/s
+            angular (float): Angular velocity in radians/s
         """
         msg = Twist()
         msg.linear.x = linear
@@ -52,18 +62,20 @@ class DrawSquare(Node):
         self.vel_pub.publish(msg)
 
     def turn_left(self):
-        """Execute a 90 degree left turn"""
+        """
+        Execute a 90 degree left turn
+        """
         angular_vel = 0.3
         self.drive(linear=0.0, angular=angular_vel)
         sleep(math.pi / angular_vel / 2)
         self.drive(linear=0.0, angular=0.0)
 
     def drive_forward(self, distance):
-        """Drive straight for the spefcified distance.
+        """
+        Drive straight for given distance
 
         Args:
-            distance (_type_): the distance to drive forward.  Only positive
-            values are supported.
+            distance (float): Distance to drive forward. Only positive values
         """
         forward_vel = 0.1
         self.drive(linear=forward_vel, angular=0.0)
