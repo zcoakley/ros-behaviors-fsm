@@ -88,9 +88,9 @@ class WallFollowerNode(Node):
             msg: A LaserScan message, which is passed in by the subscription.
 
         Returns:
-            distances: An array of ints containing the distance in meters of each
+            distances: An array of floats containing the distance in meters of each
                        point in the scan.
-            angles: An array of ints containing the angle (in radians, going
+            angles: An array of floats containing the angle (in radians, going
                     counterclockwise from the front of the Neato) of each point in
                     the scan.
         """
