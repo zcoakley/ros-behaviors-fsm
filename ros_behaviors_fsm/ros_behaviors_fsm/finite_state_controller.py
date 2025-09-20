@@ -11,6 +11,7 @@ from rclpy.node import Node
 from rclpy.qos import qos_profile_sensor_data
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import LaserScan
+from neato2_interfaces.msg import Bump
 
 
 class FSMNode(Node):
@@ -41,11 +42,22 @@ class PersonFollowerNode(Node):
     Copy from person follower when done.
     """
 
+    _bumped = False
+
     def __init__(self):
         super().__init__("person_follower")
+        self.create_subscription(
+            Bump, "bump", self.process_bump, qos_profile=qos_profile_sensor_data
+        )
 
     def run_loop(self):
+        if self._bumped is True:
+            return "e_stop"
         return "person_follower"
+
+    def process_bump(self, msg):
+        if msg.left_front or msg.right_front == 1:
+            self._bumped = True
 
 
 class EStopNode(Node):
