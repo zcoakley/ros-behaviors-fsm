@@ -68,11 +68,17 @@ class EStopNode(Node):
     def __init__(self):
         super().__init__("e_stop")
         self.settings = termios.tcgetattr(sys.stdin)
+        self.vel_pub = self.create_publisher(Twist, "cmd_vel", 10)
 
     def run_loop(self):
         """
         docstring
         """
+        msg = Twist()
+        msg.linear.x = 0.0
+        msg.angular.z = 0.0
+        self.vel_pub.publish(msg)
+
         key = self.get_key()
 
         if key == "\x03":
