@@ -38,7 +38,7 @@ class WallFollowerNode(Node):
         Run the wall following behavior.
 
         This function is run on a timer every 0.1 sec. It uses proportional control to
-        adjust the Neato's angular z velocity based on lider scan data from the /scan
+        adjust the Neato's angular z velocity based on lidar scan data from the /scan
         topic. It adjusts the velocity to turn the Neato parallel to the wall and move
         it forward at 0.2 m/s.
 
