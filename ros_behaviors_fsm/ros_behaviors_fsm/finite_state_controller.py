@@ -29,7 +29,7 @@ class FSMNode(Node):
 
     def run_loop(self):
         """
-        docstring
+        Run either the person follower or the e_stop, depending on the current state.
         """
         if self.state == "person_follower":
             self.state = self.person_follower.run_loop()
@@ -72,7 +72,13 @@ class EStopNode(Node):
 
     def run_loop(self):
         """
-        docstring
+        Make the Neato do nothing unles the spacebar is pressed.
+
+        Pressing spacebar will change the FSM state back to person
+        following.
+
+        Returns:
+            str: the state to switch to/continue with (either "e_stop" or "person_follower")
         """
         msg = Twist()
         msg.linear.x = 0.0
