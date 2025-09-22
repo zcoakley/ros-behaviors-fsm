@@ -21,7 +21,6 @@ class DrawSquare(Node):
 
     Attributes:
         vel_pub (rclpy.publisher.Publisher): Published for velocities
-        run_loop_thread (Thread): Thread that runs drive loop
     """
 
     def __init__(self):
@@ -29,16 +28,12 @@ class DrawSquare(Node):
         Initializes DrawSquare node
         """
         super().__init__("draw_square")
-        # create a thread to handle long-running component
         self.vel_pub = self.create_publisher(Twist, "cmd_vel", 10)
-        self.run_loop_thread = Thread(target=self.run_loop)
-        self.run_loop_thread.start()
 
     def run_loop(self):
         """
         Main drive loop to get robot to drive in a square
         """
-        # the first message on the publisher is often missed
         self.drive(0.0, 0.0)
         sleep(1)
         for _ in range(4):
@@ -86,7 +81,7 @@ class DrawSquare(Node):
 def main(args=None):
     rclpy.init(args=args)
     node = DrawSquare()
-    rclpy.spin(node)
+    node.run_loop()
     node.destroy_node()
     rclpy.shutdown()
 
