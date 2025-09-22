@@ -22,8 +22,6 @@ class WallFollowerNode(Node):
     LASER_SCAN_ANGLE_INCREMENT = 0.017453277483582497  # radians
     LASER_SCAN_ARRAY_LENGTH = 361
     Kp = 1
-    _distances = [None] * LASER_SCAN_ARRAY_LENGTH
-    _angles = [None] * LASER_SCAN_ARRAY_LENGTH
 
     def __init__(self):
         super().__init__("wall_follower")
@@ -32,13 +30,15 @@ class WallFollowerNode(Node):
         self.create_subscription(
             LaserScan, "scan", self.process_scan, qos_profile=qos_profile_sensor_data
         )
+        self._distances = [None] * self.LASER_SCAN_ARRAY_LENGTH
+        self._angles = [None] * self.LASER_SCAN_ARRAY_LENGTH
 
     def run_loop(self):
         """
         Run the wall following behavior.
 
         This function is run on a timer every 0.1 sec. It uses proportional control to
-        adjust the Neato's angular z velocity based on lider scan data from the /scan
+        adjust the Neato's angular z velocity based on lidar scan data from the /scan
         topic. It adjusts the velocity to turn the Neato parallel to the wall and move
         it forward at 0.2 m/s.
 
@@ -47,17 +47,41 @@ class WallFollowerNode(Node):
             topic.
         """
         # return if self._distances and self._angles haven't been populated yet
-        if not self._distances[0]:
-            return
+        # if not self._distances[0]:
+        #     return
 
         msg = Twist()
 
-        # hardcoding points for now (both on the right of the neato)
-        theta_1 = self._angles[250]
-        theta_2 = self._angles[290]
-        a = self._distances[250]
-        b = self._distances[290]
+        # Range of angles for the Neato to measure from (degrees)
+        SWEEP_MIN = 225
+        SWEEP_MAX = 315
 
+        a = self._distances[SWEEP_MIN]
+        b = self._distances[SWEEP_MAX]
+
+        # Find values for a and b that actually exist
+        a_index = SWEEP_MIN
+        while not a:
+            a_index += 1
+            a = self._angles[a_index]
+
+            if a_index == SWEEP_MAX:
+                print("Not enough valid scans")
+                return
+
+        theta_1 = self._angles[a_index]
+
+        b_index = SWEEP_MAX
+        while not b:
+            b_index -= 1
+            b = self._angles[b_index]
+
+            if b_index in [SWEEP_MIN, a_index]:
+                print("Not enough valid scans")
+                return
+        theta_2 = self._angles[b_index]
+
+        # Calculate the error angle
         theta_c = theta_2 - theta_1
 
         c = math.sqrt(a**2 + b**2 - 2 * a * b * math.cos(theta_c))
@@ -88,9 +112,9 @@ class WallFollowerNode(Node):
             msg: A LaserScan message, which is passed in by the subscription.
 
         Returns:
-            distances: An array of ints containing the distance in meters of each
+            distances: An array of floats containing the distance in meters of each
                        point in the scan.
-            angles: An array of ints containing the angle (in radians, going
+            angles: An array of floats containing the angle (in radians, going
                     counterclockwise from the front of the Neato) of each point in
                     the scan.
         """
@@ -101,6 +125,9 @@ class WallFollowerNode(Node):
             else:
                 self._distances[i] = None
                 self._angles[i] = None
+
+        # print("Distances: ", self._distances[:20])
+        # print("Angles: ", self._angles[:20])
 
 
 def main(args=None):
