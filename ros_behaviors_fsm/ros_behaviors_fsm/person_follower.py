@@ -25,7 +25,7 @@ class PersonFollowerNode(Node):
     Kp_angular = 0.02
     Kp_linear = 0.5
     _distances = [0.0] * LASER_SCAN_ARRAY_LENGTH
-    _filter_distance = 1
+    _filter_distance = 1.5
     _person_follow_point_cutoff = 1
 
     def __init__(self):
@@ -46,7 +46,6 @@ class PersonFollowerNode(Node):
         """
         # print(self._distances)
         msg = Twist()
-        # return if self._distances and self._angles haven't been populated yet
 
         [person_angle, person_distance] = self.find_person()
         msg.angular.z = person_angle * self.Kp_angular
@@ -122,7 +121,6 @@ def convert_to_cartesian(distances):
     y_val = []
     for i, d in enumerate(distances):
         angle = math.radians(i)
-
         x = d * math.cos(angle)
         y = d * math.sin(angle)
         x_val.append(x)
@@ -131,13 +129,12 @@ def convert_to_cartesian(distances):
     return x_val, y_val
 
 
-def plot_cartesian(x_val, y_val):
+def plot_cartesian(x_val, y_val, person_x=None, person_y=None):
     plt.figure(figsize=(6, 6))
-    plt.scatter(x_val, y_val, s=5, c="blue")  # s = marker size
-    plt.xlabel("X (meters)")
-    plt.ylabel("Y (meters)")
-    plt.title("LiDAR Scan - Cartesian View")
-    plt.axis("equal")  # Equal aspect ratio for accurate spatial representation
+    plt.scatter(x_val, y_val, s=5, c="blue")
+    if person_x is not None and person_y is not None:
+        plt.scatter(person_x, person_y, color="red", s=50, label="Estimated Person")
+    plt.axis("equal")
     plt.grid(True)
     plt.show()
 
