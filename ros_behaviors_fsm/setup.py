@@ -23,6 +23,7 @@ setup(
             "draw_square = ros_behaviors_fsm.draw_square:main",
             "finite_state_controller = ros_behaviors_fsm.finite_state_controller:main",
             "wall_follower = ros_behaviors_fsm.wall_follower:main",
+            "person_follower = ros_behaviors_fsm.person_follower:main",
         ],
     },
 )
