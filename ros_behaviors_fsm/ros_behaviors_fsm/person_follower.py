@@ -49,9 +49,6 @@ class PersonFollowerNode(Node):
         # return if self._distances and self._angles haven't been populated yet
 
         [person_angle, person_distance] = self.find_person()
-        # [linear_velocity, angular_velocity] = self.follow_person(
-        #     person_angle, person_distance, 1
-        # )
         msg.angular.z = person_angle * self.Kp_angular
         msg.linear.x = min(person_distance * self.Kp_linear, 0.3)
         print([msg.angular.z, msg.linear.x])
@@ -95,7 +92,6 @@ class PersonFollowerNode(Node):
             person_angle: a float representing the person's angle in degrees
             person_distance: a float representing the person's distance in degrees
         """
-        # Count the number of valid points (points <= 2m away) in distance_array
         distance_array = [
             0 if d > self._filter_distance else d for d in self._distances
         ]
@@ -111,32 +107,9 @@ class PersonFollowerNode(Node):
             return 0.0, 0.0
         person_point_angles = convert_to_signed_angles(person_point_angles)
 
-        # Actually, use the angles output by process_scan---just make sure they are in degrees
         person_angle = float(statistics.mean(person_point_angles))
         person_distance = float(statistics.mean(person_point_distance))
         return person_angle, person_distance
-
-    def follow_person(self, person_angle, person_distance, target_distance):
-        """
-        This function enables the Neato to maintain a fixed distance behind a person by taking a person's location
-        as input and outputting the correct linear and angular velocities.
-
-        Args:
-            person_angle: a float representing the person's angle in degrees
-            person_distance: a float representing the person's distance in degrees
-            target_distance: a float representing the ideal distance between the person and Neato
-
-        Returns:
-            linear_velocity: a float representing the linear velocity to which the Neato's wheels should be set
-            angular_velocity: a float representing an angular velocity to which the Neato's wheels should be set
-        """
-
-        if person_angle > 180:
-            person_angle = 0 - (360 - person_angle)
-        linear_velocity = math.max(0, person_distance - target_distance * self.Kp)
-        angular_velocity = person_angle * self.Kp
-
-        return linear_velocity, angular_velocity
 
 
 def convert_to_signed_angles(angle_list):
@@ -144,13 +117,11 @@ def convert_to_signed_angles(angle_list):
     return [(angle + 180) % 360 - 180 for angle in angle_list]
 
 
-def convert_to_cartesian(distances, angle_start=0, angle_step=1, degrees=True):
+def convert_to_cartesian(distances):
     x_val = []
     y_val = []
     for i, d in enumerate(distances):
-        angle = angle_start + i * angle_step
-        if degrees:
-            angle = math.radians(angle)  # convert to radians if in degrees
+        angle = math.radians(i)
 
         x = d * math.cos(angle)
         y = d * math.sin(angle)
