@@ -49,7 +49,7 @@ where `v_out` is the outputted angular velocity, `K_p` is the proportional gain,
 
 The following diagram illustrates `θ_error` as well as the Neato frame vs global frame:
 
-<img src="drawing.jpg" alt="drawing" width="200"/>
+<img src="image_files/Figure1NeatoFrames.jpg" alt="Figure 1: Neato Frames" width="800"/>
 
 **Figure 1.** The global (odom) vs Neato (base link) frames relative to the Neato. `θ_error` is the angular difference between the two frames. The unlabeled black line is the wall, which is parallel to the odom frame.
 
