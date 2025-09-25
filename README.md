@@ -136,11 +136,11 @@ The `find_person()` method receives the LiDar data in the form of a list where e
 
 The data then gets filtered, dropping any distances greater than 1.5 meters. We do this to remove any noise. Below is what the robot sees after this filtering is done. For the purposes of visualization, the polar coordinates have been converted to cartesian.
 
-<img src="image_files/Figure3.jpg" alt="Figure 3" width="500"/>
+<img src="image_files/Figure3.png" alt="Figure 3" width="500"/>
 
 After filtering, the angles and distances that remain are extracted. To estimate the position of the object to be followed, the angles are converted from 0, 360 to -180, 180. Then, the angles and distances are averaged to get an estimated position. Below the red point shows the estimated position the Neato thinks the object is at. Once again, everything is being shown in cartesian coordinates for the sake of visualization.
 
-<img src="image_files/Figure4.jpg" alt="Figure 4" width="500"/>
+<img src="image_files/Figure4.png" alt="Figure 4" width="500"/>
 
 The estimated distance and angle position of the object to be followed is then returned by `find_person()`. These values then get used in `run_loop()`. Proportional control values of `Kp_linear` and `Kp_angular` are applied to the values to obtain a linear and angular velocity. These values are then published on `/cmd_vel` for the Neato.
 
