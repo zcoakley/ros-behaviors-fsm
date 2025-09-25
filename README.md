@@ -49,13 +49,15 @@ where `v_out` is the outputted angular velocity, `K_p` is the proportional gain,
 
 The following diagram illustrates `θ_error` as well as the Neato frame vs global frame:
 
-<img src="image_files/Figure1NeatoFrames.jpg" alt="Figure 1: Neato Frames" width="800"/>
+<img src="image_files/Figure1NeatoFrames.jpg" alt="Figure 1: Neato Frames" width="500"/>
 
 **Figure 1.** The global (odom) vs Neato (base link) frames relative to the Neato. `θ_error` is the angular difference between the two frames. The unlabeled black line is the wall, which is parallel to the odom frame.
 
 #### Calculating θ_error
 
 To calculate `θ_error`, we can use the diagram below to derive several equations.
+
+<img src="image_files/Figure2NeatoAndWall.jpg" alt="Figure 2: Neato and Wall" width="500"/>
 
 **Figure 2.** Two individual lidar scans from the Neato (shown as dotted black lines) create a triangle with the wall. From the lidar scan, we know the angles `θ_1` and `θ_2`, and we know the distances `a` and `b`.
 
@@ -134,13 +136,19 @@ The `find_person()` method receives the LiDar data in the form of a list where e
 
 The data then gets filtered, dropping any distances greater than 1.5 meters. We do this to remove any noise. Below is what the robot sees after this filtering is done. For the purposes of visualization, the polar coordinates have been converted to cartesian.
 
+<img src="image_files/Figure3.jpg" alt="Figure 3" width="500"/>
+
 After filtering, the angles and distances that remain are extracted. To estimate the position of the object to be followed, the angles are converted from 0, 360 to -180, 180. Then, the angles and distances are averaged to get an estimated position. Below the red point shows the estimated position the Neato thinks the object is at. Once again, everything is being shown in cartesian coordinates for the sake of visualization.
+
+<img src="image_files/Figure4.jpg" alt="Figure 4" width="500"/>
 
 The estimated distance and angle position of the object to be followed is then returned by `find_person()`. These values then get used in `run_loop()`. Proportional control values of `Kp_linear` and `Kp_angular` are applied to the values to obtain a linear and angular velocity. These values are then published on `/cmd_vel` for the Neato.
 
 ### Finite State Machine
 
 This module is a finite state machine, which combines the person follower node with a stop/continue feature. The Neato will follow a person until it bumps into them, then it will stop. It can be resumed by pressing the spacebar.
+
+<img src="image_files/Figure5FSM.png" alt="Figure 5: FSM" width="500"/>
 
 **Figure 5.** Finite state machine diagram with two states: person following and e-stop, and the conditions under which they transition to the other state.
 
